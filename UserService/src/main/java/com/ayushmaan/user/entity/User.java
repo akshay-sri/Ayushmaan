@@ -1,6 +1,6 @@
-package com.quickbite.UserService.entity;
+package com.ayushmaan.user.entity;
 
-import com.quickbite.UserService.enums.Role;
+import com.ayushmaan.user.enums.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,8 +29,6 @@ public class User implements UserDetails {
     private String password;
 
     private String name;
-
-    private String phone;
 
     @ElementCollection(fetch = FetchType.EAGER) //JPA will create new table
     @Enumerated(EnumType.STRING)

@@ -1,4 +1,4 @@
-package com.quickbite.UserService.dto;
+package com.ayushmaan.user.dto;
 
 import lombok.Data;
 

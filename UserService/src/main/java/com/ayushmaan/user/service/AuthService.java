@@ -1,12 +1,11 @@
-package com.quickbite.UserService.service;
+package com.ayushmaan.user.service;
 
-import com.quickbite.UserService.dto.LoginDTO;
-import com.quickbite.UserService.dto.SignUpRequestDTO;
-import com.quickbite.UserService.entity.User;
-import com.quickbite.UserService.enums.Role;
-import com.quickbite.UserService.exception.ResourceNotFoundException;
-import com.quickbite.UserService.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import com.ayushmaan.user.dto.LoginDTO;
+import com.ayushmaan.user.dto.SignUpRequestDTO;
+import com.ayushmaan.user.entity.User;
+import com.ayushmaan.user.enums.Role;
+import com.ayushmaan.user.exception.ResourceNotFoundException;
+import com.ayushmaan.user.repository.UserRepository;
 import org.apache.commons.lang3.ObjectUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
     private final ModelMapper modelMapper;
@@ -27,11 +25,19 @@ public class AuthService {
     private final JWTService jwtService;
     private final UserRepository userRepository;
 
+    public AuthService(ModelMapper modelMapper, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService, UserRepository userRepository){
+        this.modelMapper = modelMapper;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.userRepository = userRepository;
+    }
+
     public String signUp(SignUpRequestDTO signUpRequestDto) {
 
         User user = userRepository.findByEmail(signUpRequestDto.getEmail()).orElse(null);
 
-        if (ObjectUtils.isEmpty(user)) {
+        if (ObjectUtils.isNotEmpty(user)) {
             throw new RuntimeException("User already exists with this email id");
         }
 

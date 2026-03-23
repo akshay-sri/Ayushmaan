@@ -1,4 +1,4 @@
-package com.quickbite.UserService.enums;
+package com.ayushmaan.user.enums;
 
 public enum Role {
     CUSTOMER,

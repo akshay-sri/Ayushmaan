@@ -1,8 +1,8 @@
-package com.quickbite.UserService.dto;
+package com.ayushmaan.user.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class SignUpRequestDTO {
     private String email;
     private String password;

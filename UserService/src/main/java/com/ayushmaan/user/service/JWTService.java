@@ -1,6 +1,6 @@
-package com.quickbite.UserService.service;
+package com.ayushmaan.user.service;
 
-import com.quickbite.UserService.entity.User;
+import com.ayushmaan.user.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

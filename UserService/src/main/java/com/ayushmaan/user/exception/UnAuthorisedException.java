@@ -1,4 +1,4 @@
-package com.quickbite.UserService.exception;
+package com.ayushmaan.user.exception;
 
 public class UnAuthorisedException extends RuntimeException{
     public UnAuthorisedException(String message) {
