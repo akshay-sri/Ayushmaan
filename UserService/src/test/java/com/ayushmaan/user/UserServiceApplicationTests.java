@@ -1,4 +1,4 @@
-package com.quickbite.UserService;
+package com.ayushmaan.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

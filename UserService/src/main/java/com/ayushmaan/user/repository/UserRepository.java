@@ -1,6 +1,7 @@
-package com.quickbite.UserService.repository;
+package com.ayushmaan.user.repository;
 
-import com.quickbite.UserService.entity.User;
+
+import com.ayushmaan.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

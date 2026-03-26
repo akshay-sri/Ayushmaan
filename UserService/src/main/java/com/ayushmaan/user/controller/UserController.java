@@ -1,15 +1,14 @@
-package com.quickbite.UserService.controller;
+package com.ayushmaan.user.controller;
 
-import com.quickbite.UserService.dto.LoginDTO;
-import com.quickbite.UserService.dto.LoginResponseDTO;
-import com.quickbite.UserService.dto.SignUpRequestDTO;
-import com.quickbite.UserService.service.AuthService;
+import com.ayushmaan.user.dto.LoginDTO;
+import com.ayushmaan.user.dto.LoginResponseDTO;
+import com.ayushmaan.user.dto.SignUpRequestDTO;
+import com.ayushmaan.user.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -22,11 +21,14 @@ import java.util.Arrays;
 
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 @Tag(name = "User Authentication", description = "Authentication Operations related to users")
 public class UserController {
 
     private final AuthService authService;
+
+    public UserController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/signup")
     @Operation(summary = "Sign up a new user", description = "Creates a new user account.")

@@ -1,4 +1,4 @@
-package com.quickbite.UserService.exception;
+package com.ayushmaan.user.exception;
 
 public class ResourceNotFoundException extends RuntimeException{
     public ResourceNotFoundException(String message) {
