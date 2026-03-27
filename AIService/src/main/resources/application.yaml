@@ -1,0 +1,13 @@
+gemini:
+  api:
+    url: ${GEMINI_API_URL}
+    key: ${GEMINI_API_KEY}
+
+server:
+  servlet:
+    context-path: /ayushmaan
+  port: 8081
+spring:
+  application:
+    name: AIService
+
