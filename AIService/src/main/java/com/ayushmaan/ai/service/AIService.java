@@ -1,42 +1,58 @@
 package com.ayushmaan.ai.service;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.ayushmaan.ai.config.AmbulanceClient;
+import com.ayushmaan.ai.dto.AmbulanceRecommendationResponse;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class AIService {
 
-    @Value("${gemini.api.url}")
-    private String geminiApiUrl;
-    @Value("${gemini.api.key}")
-    private String geminiApiKey;
+    private final ChatClient chatClient;
+    private final AmbulanceClient ambulanceClient;
 
-    private final WebClient webClient;
-
-    public AIService(WebClient.Builder webclient){
-        this.webClient = webclient.build();
+    public AIService(ChatClient.Builder builder, AmbulanceClient ambulanceClient){
+        this.chatClient = builder.build();
+        this.ambulanceClient = ambulanceClient;
     }
 
-    public String getInstantHelp(String issue) {
-        Map<String, Object> request = Map.of(
-                "contents", new Object[]{
-                        Map.of("parts", new Object[] {
-                                Map.of("text", issue)
-                        })
-                }
-        );
+    @Cacheable(value = "ai-recommendations", key = "#issue")
+    public AmbulanceRecommendationResponse getInstantHelp(String issue){
+        List<String> ambulanceTypes = getAmbulances();
 
-        String response = webClient.post()
-                .uri(geminiApiUrl + geminiApiKey)
-                .header("Content-Type", "application/json")
-                .bodyValue(request)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        String prompt = """
+                You are an emergency response assistant.
 
-        return response;
+                User emergency description:
+                %s
+
+                Available ambulance types:
+                %s
+
+                Instructions:
+                - Select the most relevant ambulance types.
+                - Do not invent new ambulance types.
+                - Return ONLY ambulance names separated by comma.
+                - Do NOT return JSON.
+
+                Example:
+                ALS, BLS
+                """.formatted(issue, String.join(", ", ambulanceTypes));
+        String aiResponse = chatClient.prompt(prompt).call().content();
+        List<String> recommendedTypes = Arrays.stream(aiResponse.split(","))
+                .map(String::trim)
+                .toList();
+
+        return new AmbulanceRecommendationResponse("Here are the ambulances based on your issue", recommendedTypes);
+
+    }
+
+    @Cacheable(value = "ambulances", key = "'all'")
+    public List<String> getAmbulances() {
+        return ambulanceClient.getAmbulances();
     }
 }

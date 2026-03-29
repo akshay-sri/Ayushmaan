@@ -55,17 +55,33 @@ public class AmbulanceService {
     public List<AmbulanceDto> get(){
         List<Ambulance> ambulances = ambulanceRepository.findAll();
         return ambulances.stream()
-                .map(x->modelMapper.map(x,AmbulanceDto.class))
+                .map(a -> {
+                    AmbulanceDto dto = new AmbulanceDto();
+                    dto.setQuantity(a.getQuantity());
+                    dto.setAmbulanceType(a.getAmbulanceType());
+                    dto.setCategory(a.getCategory().getCategoryName());
+                    dto.setAvailable(a.getAvailable());
+                    dto.setInService(a.getInService());
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
-    public AmbulanceDto update(AmbulanceDto ambulanceDto, String ambulanceType){
-        Ambulance ambulance = ambulanceRepository.findByAmbulanceType(ambulanceType).orElse(null);
-        if(ObjectUtils.isEmpty(ambulance)){
-            throw new RuntimeException("AmbulanceType does not exists");
+    public String update(AmbulanceDto ambulanceDto, String ambulanceType){
+        Ambulance ambulance = ambulanceRepository.findByAmbulanceType(ambulanceType)
+                        .orElseThrow(() ->new RuntimeException("Ambulance type does not exists"));
+        if(ObjectUtils.isNotEmpty(ambulanceDto.getAmbulanceType())){
+            ambulance.setAmbulanceType(ambulanceDto.getAmbulanceType());
         }
-        ambulance = modelMapper.map(ambulanceDto, Ambulance.class);
+        if(ObjectUtils.isNotEmpty(ambulanceDto.getDescription())){
+            ambulance.setDescription(ambulanceDto.getDescription());
+
+        }
+        if(ObjectUtils.isNotEmpty(ambulanceDto.getCategory())) {
+            ambulance.setCategory(ambulanceCategoryRepository.findByCategoryName(ambulanceDto.getCategory())
+                    .orElseThrow(() -> new RuntimeException("Category does not exists")));
+        }
         ambulanceRepository.save(ambulance);
-        return modelMapper.map(ambulance, AmbulanceDto.class);
+        return "Ambulance details updated!";
     }
 }

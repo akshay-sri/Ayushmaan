@@ -19,4 +19,5 @@ public class Ambulance {
     private AmbulanceCategory category;
     private int available;
     private int inService;
+    private String description;
 }
