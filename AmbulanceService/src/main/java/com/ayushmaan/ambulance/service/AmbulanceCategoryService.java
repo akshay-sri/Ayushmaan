@@ -49,13 +49,16 @@ public class AmbulanceCategoryService {
                 .collect(Collectors.toList());
     }
 
-    public AmbulanceCategoryDto update(AmbulanceCategoryDto ambulanceCategoryDto, String categoryName){
-        AmbulanceCategory ambulanceCategory = ambulanceCategoryRepository.findByCategoryName(categoryName).orElse(null);
-        if(ObjectUtils.isEmpty(ambulanceCategory)){
-            throw new RuntimeException("AmbulanceCategory does not exists");
-        }
-        ambulanceCategory = modelMapper.map(ambulanceCategoryDto, AmbulanceCategory.class);
-        ambulanceCategoryRepository.save(ambulanceCategory);
-        return modelMapper.map(ambulanceCategory, AmbulanceCategoryDto.class);
+    public String update(AmbulanceCategoryDto ambulanceCategoryDto, String categoryName) {
+        AmbulanceCategory ambulanceCategory = ambulanceCategoryRepository.findByCategoryName(categoryName)
+                .orElseThrow(() -> new RuntimeException("Category does not exists"));
+       if(ObjectUtils.isNotEmpty(ambulanceCategoryDto.getCategoryName())){
+           ambulanceCategory.setCategoryName(ambulanceCategoryDto.getCategoryName());
+       }
+       if(ObjectUtils.isNotEmpty(ambulanceCategoryDto.getDescription())){
+           ambulanceCategory.setDescription(ambulanceCategoryDto.getDescription());
+       }
+       ambulanceCategoryRepository.save(ambulanceCategory);
+       return "Ambulance category details updated!";
     }
 }
