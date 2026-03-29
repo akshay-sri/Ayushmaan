@@ -35,7 +35,7 @@ public class AmbulanceCategoryController {
 
     @PatchMapping("/update/{categoryName}")
     @Operation(summary = "Update an ambulance category", description = "Update an ambulance category in the database")
-    public ResponseEntity<AmbulanceCategoryDto> updateAmbulanceCategory(@RequestBody AmbulanceCategoryDto ambulanceCategoryDto,
+    public ResponseEntity<String> updateAmbulanceCategory(@RequestBody AmbulanceCategoryDto ambulanceCategoryDto,
                                                         @PathVariable String categoryName) {
         return new ResponseEntity<>(ambulanceCategoryService.update(ambulanceCategoryDto, categoryName), HttpStatus.CREATED);
     }
