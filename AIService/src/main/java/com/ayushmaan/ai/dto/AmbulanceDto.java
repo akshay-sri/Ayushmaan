@@ -1,4 +1,4 @@
-package com.ayushmaan.ambulance.dto;
+package com.ayushmaan.ai.dto;
 
 import lombok.Getter;
 import lombok.Setter;
