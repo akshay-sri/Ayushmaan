@@ -1,7 +1,5 @@
 server:
-  servlet:
-    context-path: /ayushmaan
-  port: 8082
+  port: 8083
 
 spring:
   application:
@@ -18,3 +16,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
