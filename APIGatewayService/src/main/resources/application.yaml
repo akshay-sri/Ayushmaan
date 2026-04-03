@@ -1,0 +1,40 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /ayushmaan
+
+spring:
+  application:
+    name: APIGatewayService
+
+  cloud:
+    gateway:
+      routes:
+
+        - id: user_service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/ayushmaan/auth/**
+          filters:
+            - RewritePath=/ayushmaan/auth/(?<segment>.*), /auth/${segment}
+
+        - id: ai_service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/ayushmaan/ai/**
+          filters:
+            - RewritePath=/ayushmaan/ai/(?<segment>.*), /ai/${segment}
+
+        - id: ambulance_service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/ayushmaan/ambulance/**
+          filters:
+            - RewritePath=/ayushmaan/ambulance/(?<segment>.*), /ambulance/${segment}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
