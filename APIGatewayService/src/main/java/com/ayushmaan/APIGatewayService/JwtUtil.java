@@ -33,4 +33,9 @@ public class JwtUtil {
             return false;
         }
     }
+
+    public String extractEmail(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("email", String.class);
+    }
 }
