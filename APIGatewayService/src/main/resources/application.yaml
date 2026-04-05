@@ -28,7 +28,7 @@ spring:
         - id: ambulance_service
           uri: http://localhost:8083
           predicates:
-            - Path=/ayushmaan/ambulance/**
+            - Path=/ayushmaan/ambulance/get
           filters:
             - RewritePath=/ayushmaan/ambulance/(?<segment>.*), /ambulance/${segment}
 
@@ -38,3 +38,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     register-with-eureka: true
     fetch-registry: true
+
+jwt:
+  secretKey: ${JWT_KEY:123}
