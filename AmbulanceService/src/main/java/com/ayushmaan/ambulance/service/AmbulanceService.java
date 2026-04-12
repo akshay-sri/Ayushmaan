@@ -60,7 +60,7 @@ public class AmbulanceService {
                     dto.setQuantity(a.getQuantity());
                     dto.setAmbulanceType(a.getAmbulanceType());
                     dto.setCategory(a.getCategory().getCategoryName());
-                    dto.setDescription(a.getCategory().getDescription());
+                    dto.setDescription(a.getDescription());
                     dto.setAvailable(a.getAvailable());
                     dto.setInService(a.getInService());
                     return dto;

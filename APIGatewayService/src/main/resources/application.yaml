@@ -32,6 +32,13 @@ spring:
           filters:
             - RewritePath=/ayushmaan/ambulance/(?<segment>.*), /ambulance/${segment}
 
+        - id: booking_service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/ayushmaan/booking/**
+          filters:
+            - RewritePath=/ayushmaan/booking/(?<segment>.*), /booking/${segment}
+
 eureka:
   client:
     service-url:

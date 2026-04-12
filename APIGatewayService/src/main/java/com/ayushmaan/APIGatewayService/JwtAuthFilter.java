@@ -5,6 +5,7 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -30,9 +31,8 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
                 return exchange.getResponse().setComplete();
             }
 
-            String authHeader =
-                    exchange.getRequest().getHeaders()
-                            .getFirst(HttpHeaders.AUTHORIZATION);
+            String authHeader = exchange.getRequest().getHeaders()
+                    .getFirst(HttpHeaders.AUTHORIZATION);
 
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
@@ -43,6 +43,19 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
                     exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                     return exchange.getResponse().setComplete();
                 }
+
+                // 🔹 Extract email from JWT
+                String email = jwtUtil.extractEmail(token);
+
+                // 🔹 Add email to request header
+                ServerHttpRequest modifiedRequest = exchange.getRequest()
+                        .mutate()
+                        .header("X-User-Email", email)
+                        .build();
+
+                exchange = exchange.mutate()
+                        .request(modifiedRequest)
+                        .build();
 
             } else {
 
