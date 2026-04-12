@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 public class BookingRequest {
     private String ambulanceType;
-    private double pickupLocation;
-    private double dropLocation;
+    private String pickupLocation;
+    private String dropLocation;
 }
